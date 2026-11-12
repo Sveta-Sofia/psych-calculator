@@ -43,7 +43,7 @@ for(let i=0;i<scales.length;i++){const s=scales[i],div=document.createElement('d
 month.addEventListener('change',update);
 function getBonus(m) {
   m = Number(m);
-  return [7,8,9, 10, 11, 12].includes(m) ? 5 :
+  return [7, 8, 9, 10, 11, 12].includes(m) ? 5 :
          [3, 4, 5, 6].includes(m) ? 2.5 : 0;
 }
 function update(){let filled=0,valid=true,total=0,lines=[],problem='';scales.forEach((s,i)=>{let v=document.getElementById('score'+i).value.trim(),pts=null;if(v!==''){filled++;let n=Number(v);if(!Number.isInteger(n)||n<0||n>s.max){valid=false;problem=`„${s.name}“ трябва да е цяло число от 0 до ${s.max}.`}else{let bracket=s.ranges.find(r=>n>=r.min&&n<=r.max);if(bracket){pts=bracket.points;total+=pts}else{valid=false;problem=`Няма точкова скала за „${s.name}“ при резултат ${n}.`}}}const pill=document.getElementById('points'+i);pill.classList.toggle('invalid',v!==''&&pts===null);pill.querySelector('strong').textContent=v!==''&&pts===null?'!':pts===null?'—':fmt(pts);lines.push([s.name,pts])});let m=Number(month.value),monthSet=month.value!=='';if(monthSet){filled++}let ready=valid&&filled===5;let bonus=monthSet?getBonus(m):null;if(ready)total+=bonus;
